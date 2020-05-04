@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'dart:convert';
 import 'package:covid19/data.dart';
 import 'package:covid19/pages/countryPage.dart';
@@ -12,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -101,15 +99,6 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             'COVID-19 UPDATES',
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () async {
-                var hasOpened = openAppSettings();
-                debugPrint('App Settings opened: ' + hasOpened.toString());
-              },
-            )
-          ],
         ),
         body: RefreshIndicator(
           onRefresh: getData,
@@ -242,9 +231,11 @@ class _HomePageState extends State<HomePage> {
     switch (result) {
       case ConnectivityResult.wifi:
         setState(() {
-          if ('$result' == 'ConnectivityResult.wifi' ||'$result' == 'ConnectivityResult.mobile') {
+          if ('$result' == 'ConnectivityResult.wifi' ||
+              '$result' == 'ConnectivityResult.mobile') {
             _connectionStatus = 'Online\n';
-          }else _connectionStatus = 'Offline ';
+          } else
+            _connectionStatus = 'Offline ';
         });
         break;
       case ConnectivityResult.mobile:
